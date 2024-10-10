@@ -1,0 +1,47 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Ignore backup files created by Terraform
+*.backup
+
+# Ignore logs
+*.log
+
+# Ignore any .tfvars files that may contain sensitive data
+*.tfvars
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore directory created by Terraform CLI for modules
+.terraform/
+
+# Ignore directories created by popular IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.sublime-workspace
+*.sublime-project
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore output of the terraform graph command
+graph.svg
+
+# Archives and compression
+*.tgz
+*.zip
+*.tar.gz
+*.tar
