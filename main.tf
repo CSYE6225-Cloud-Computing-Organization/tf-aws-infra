@@ -3,6 +3,7 @@ provider "aws" {
   region  = var.AWS_REGION
 }
 
+
 # VPC Module - This outputs the VPC ID
 module "vpc" {
   source         = "./modules/vpc"
