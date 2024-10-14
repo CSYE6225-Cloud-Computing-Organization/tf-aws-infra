@@ -3,6 +3,12 @@ provider "aws" {
   region  = var.AWS_REGION
 }
 
+# VPC Module - This outputs the VPC ID
+module "vpc" {
+  source         = "./modules/vpc"
+  vpc_cidr_block = var.vpc_cidr_block
+  vpc_name       = var.vpc_name
+}
 
 # Subnets Module - This outputs the public and private subnet IDs
 module "subnets" {
