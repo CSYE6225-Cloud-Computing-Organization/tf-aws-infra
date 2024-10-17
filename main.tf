@@ -27,3 +27,16 @@ module "routing" {
   public_subnet_ids  = module.subnets.public_subnet_ids  # Pass public subnet IDs from subnets module
   private_subnet_ids = module.subnets.private_subnet_ids # Pass private subnet IDs from subnets module
 }
+
+module "ec2" {
+  source            = "./modules/ec2"
+  vpc_id            = module.vpc.vpc_id  
+  ami               = var.ami  # Reference the declared variable
+  instance_type     = var.instance_type  # Reference the declared variable
+  subnet_id         = module.subnets.public_subnet_ids[0]  # Reference the subnet module
+  application_port  = 3000
+  root_volume_size  = 25
+  root_volume_type  = "gp2"
+}
+
+
