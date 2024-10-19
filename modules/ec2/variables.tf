@@ -40,4 +40,9 @@ variable "root_volume_type" {
   type        = string
 }
 
+variable "common_cidr_block" {
+  description = "Common CIDR block for accessible IPs"
+  type        = string
+  default     = "0.0.0.0/0"
+}
 
