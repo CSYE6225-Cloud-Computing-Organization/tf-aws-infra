@@ -5,7 +5,7 @@ resource "aws_security_group" "application_security_group" {
   name        = "application security group"
   description = "Security group for EC2 instances hosting web applications"
 
-   ingress {
+  ingress {
     description = "Allow SSH"
     from_port   = 22
     to_port     = 22
@@ -51,10 +51,10 @@ resource "aws_security_group" "application_security_group" {
 
 # EC2 Instance
 resource "aws_instance" "web_app_instance" {
-  ami                    = var.ami                   
-  instance_type          = var.instance_type          
+  ami                    = var.ami
+  instance_type          = var.instance_type
   subnet_id              = var.subnet_id
-  vpc_security_group_ids = [aws_security_group.application_security_group.id]  # Use vpc_security_group_ids for VPC
+  vpc_security_group_ids = [aws_security_group.application_security_group.id] # Use vpc_security_group_ids for VPC
 
   root_block_device {
     volume_size           = var.root_volume_size
@@ -62,7 +62,7 @@ resource "aws_instance" "web_app_instance" {
     delete_on_termination = true
   }
 
-  disable_api_termination = false  
+  disable_api_termination = false
 
   tags = {
     Name = "webapp"
