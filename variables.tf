@@ -34,12 +34,21 @@ variable "AWS_REGION" {
   type        = string
 
 }
-
-
 variable "ami" {
   description = "AMI ID to use for the EC2 instance"
 }
 
 variable "instance_type" {
   description = "EC2 instance type"
+}
+
+variable "application_port" {
+  description = "The port number used by the application"
+  type        = number
+}
+
+variable "common_cidr_block" {
+  description = "Common CIDR block for accessible IPs"
+  type        = string
+  default     = "0.0.0.0/0"
 }
