@@ -1,4 +1,3 @@
-# EC2 Security Group
 resource "aws_security_group" "application_security_group" {
   vpc_id = var.vpc_id
 
@@ -54,7 +53,31 @@ resource "aws_instance" "web_app_instance" {
   ami                    = var.ami
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
-  vpc_security_group_ids = [aws_security_group.application_security_group.id] # Use vpc_security_group_ids for VPC
+  vpc_security_group_ids = [aws_security_group.application_security_group.id]
+
+  user_data = <<-EOF
+  #!/bin/bash
+
+  # Create the .env file with environment variables
+  cat <<EOT > /home/ubuntu/webapp/.env
+  PORT='${var.application_port}'
+  DATABASE_NAME='${var.db_name}'
+  DATABASE_USER='${var.db_username}'
+  DATABASE_PASSWORD='${var.db_password}'
+  DATABASE_HOST='${element(split(":", var.db_host), 0)}'
+  DATABASE_DIALECT='mysql'
+  NODE_ENV='production'
+  EOT
+
+  # Check if webapp.service exists and restart the service
+    if systemctl list-units --full -all | grep -Fq 'webapp.service'; then
+      sudo systemctl enable webapp.service
+      sudo systemctl daemon-reload
+      sudo systemctl restart webapp.service
+    fi
+  EOF
+
+
 
   root_block_device {
     volume_size           = var.root_volume_size
@@ -62,11 +85,9 @@ resource "aws_instance" "web_app_instance" {
     delete_on_termination = true
   }
 
-  disable_api_termination = false
-
   tags = {
     Name = "webapp"
   }
 
-  depends_on = [aws_security_group.application_security_group]
 }
+
