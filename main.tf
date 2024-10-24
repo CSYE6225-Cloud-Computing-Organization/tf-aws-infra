@@ -28,6 +28,20 @@ module "routing" {
   private_subnet_ids = module.subnets.private_subnet_ids
 }
 
+module "rds" {
+  source                = "./modules/rds"
+  instance_class        = var.instance_class
+  db_engine             = var.db_engine
+  engine_version        = var.engine_version
+  db_identifier         = var.db_identifier
+  db_name               = var.db_name
+  db_username           = var.db_username
+  db_password           = var.db_password
+  subnet_ids            = module.subnets.private_subnet_ids
+  app_security_group_id = module.ec2.app_security_group_id
+  vpc_id                = module.vpc.vpc_id
+}
+
 module "ec2" {
   source           = "./modules/ec2"
   vpc_id           = module.vpc.vpc_id
@@ -35,8 +49,15 @@ module "ec2" {
   instance_type    = var.instance_type
   subnet_id        = module.subnets.public_subnet_ids[0]
   application_port = var.application_port
-  root_volume_size = 25
-  root_volume_type = "gp2"
+  root_volume_size = var.root_volume_size
+  root_volume_type = var.root_volume_type
+  db_host          = module.rds.db_instance_endpoint
+  db_name          = var.db_name
+  db_username      = var.db_username
+  db_password      = var.db_password
+  db_identifier    = var.db_identifier
+
 }
+
 
 

@@ -46,3 +46,30 @@ variable "common_cidr_block" {
   default     = "0.0.0.0/0"
 }
 
+variable "db_name" {
+  type        = string
+  description = "Database name"
+}
+
+variable "db_username" {
+  type        = string
+  description = "Database user name"
+}
+
+variable "db_password" {
+  type        = string
+  description = "Database password"
+  sensitive   = true
+}
+
+variable "db_identifier" {
+  description = "The identifier for the RDS database instance"
+  type        = string
+}
+
+variable "db_host" {
+  description = "The RDS database endpoint"
+  type        = string
+}
+
+
