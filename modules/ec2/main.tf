@@ -55,7 +55,7 @@ resource "aws_instance" "web_app_instance" {
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [aws_security_group.application_security_group.id]
 
-user_data = <<-EOF
+  user_data = <<-EOF
   #!/bin/bash
 
   # Create the .env file with environment variables

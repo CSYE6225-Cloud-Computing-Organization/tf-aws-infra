@@ -4,10 +4,10 @@ resource "aws_security_group" "db_security_group" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "Allow MySQL traffic"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
+    description     = "Allow MySQL traffic"
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
     security_groups = [var.app_security_group_id]
   }
 
@@ -26,21 +26,21 @@ resource "aws_security_group" "db_security_group" {
 
 # RDS Instance
 resource "aws_db_instance" "default" {
-  allocated_storage     = 20
-  storage_type          = "gp2"
-  engine                = var.db_engine
-  engine_version        = var.engine_version
-  instance_class        = var.instance_class
-  identifier            = var.db_identifier
-  db_name               = var.db_name
-  username              = var.db_username
-  password              = var.db_password
-  db_subnet_group_name  = aws_db_subnet_group.default.name
-  vpc_security_group_ids= [aws_security_group.db_security_group.id]
-  parameter_group_name  = aws_db_parameter_group.custom.name
-  skip_final_snapshot   = true
-  publicly_accessible   = false
-  multi_az              = false
+  allocated_storage      = 20
+  storage_type           = "gp2"
+  engine                 = var.db_engine
+  engine_version         = var.engine_version
+  instance_class         = var.instance_class
+  identifier             = var.db_identifier
+  db_name                = var.db_name
+  username               = var.db_username
+  password               = var.db_password
+  db_subnet_group_name   = aws_db_subnet_group.default.name
+  vpc_security_group_ids = [aws_security_group.db_security_group.id]
+  parameter_group_name   = aws_db_parameter_group.custom.name
+  skip_final_snapshot    = true
+  publicly_accessible    = false
+  multi_az               = false
 }
 
 # DB Subnet Group
@@ -59,8 +59,8 @@ resource "aws_db_parameter_group" "custom" {
   family = "${var.db_engine}${var.engine_version}"
 
   parameter {
-    name  = "character_set_server"
-    value = "utf8mb4"
+    name         = "character_set_server"
+    value        = "utf8mb4"
     apply_method = "immediate"
   }
 
