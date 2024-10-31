@@ -100,3 +100,23 @@ variable "root_volume_type" {
   type        = string
   default     = "gp2" # Or any value you prefer
 }
+
+variable "domain_name" {
+  description = "The domain name to be used for creating DNS records"
+  type        = string
+}
+
+variable "route53_zone_id" {
+  description = "Route 53 Hosted Zone"
+  type        = string
+}
+
+variable "environment" {
+  description = "environment (dev/demo)"
+  type        = string
+}
+
+variable "iam_instance_profile" {
+  description = "The IAM instance profile to be used with AWS resources."
+  type        = string
+}

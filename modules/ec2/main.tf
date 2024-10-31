@@ -54,10 +54,11 @@ resource "aws_instance" "web_app_instance" {
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [aws_security_group.application_security_group.id]
+  iam_instance_profile   = var.iam_instance_profile
 
   user_data = <<-EOF
   #!/bin/bash
-
+  
   # Create the .env file with environment variables
   cat <<EOT > /home/ubuntu/webapp/.env
   PORT='${var.application_port}'
@@ -67,17 +68,29 @@ resource "aws_instance" "web_app_instance" {
   DATABASE_HOST='${element(split(":", var.db_host), 0)}'
   DATABASE_DIALECT='mysql'
   NODE_ENV='production'
+  S3_BUCKET_NAME='${var.s3_bucket_name}'
+  AWS_REGION='${var.AWS_REGION}'
+  STATSD_PORT='8125'
   EOT
 
+
   # Check if webapp.service exists and restart the service
-    if systemctl list-units --full -all | grep -Fq 'webapp.service'; then
-      sudo systemctl enable webapp.service
-      sudo systemctl daemon-reload
-      sudo systemctl restart webapp.service
-    fi
+  if systemctl list-units --full -all | grep -Fq 'webapp.service'; then
+    sudo systemctl enable webapp.service
+    sudo systemctl daemon-reload
+    sudo systemctl restart webapp.service
+  fi
+  
+  sudo chmod 664 /home/ubuntu/webapp/src/logs/app.log
+  sudo chown csye6225:csye6225 /home/ubuntu/webapp/src/logs/app.log
+
+  sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config \
+    -m ec2 \
+    -c file:/opt/cloudwatch-config.json \
+    -s
+
   EOF
-
-
 
   root_block_device {
     volume_size           = var.root_volume_size
@@ -90,4 +103,3 @@ resource "aws_instance" "web_app_instance" {
   }
 
 }
-
