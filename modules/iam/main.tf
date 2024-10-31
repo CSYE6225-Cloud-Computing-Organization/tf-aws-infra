@@ -30,8 +30,8 @@ resource "aws_iam_policy" "custom_cloudwatch_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
@@ -57,8 +57,8 @@ resource "aws_iam_policy" "s3_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect    = "Allow",
-        Action    = [
+        Effect = "Allow",
+        Action = [
           "s3:DeleteObject",
           "s3:GetObject",
           "s3:PutObject"
