@@ -42,12 +42,28 @@ module "rds" {
   vpc_id                = module.vpc.vpc_id
 }
 
+module "iam" {
+  source             = "./modules/iam"
+  s3_bucket_arn  = module.s3.bucket_arn
+}
+
+module "s3" {
+  source = "./modules/s3"
+}
+
+
 module "ec2" {
   source           = "./modules/ec2"
   vpc_id           = module.vpc.vpc_id
   ami              = var.ami
   instance_type    = var.instance_type
   subnet_id        = module.subnets.public_subnet_ids[0]
+  iam_instance_profile = module.iam.iam_instance_profile_name
+  route53_zone_id  = var.route53_zone_id
+  domain_name      = var.domain_name
+  environment      = var.environment
+  AWS_REGION = var.AWS_REGION
+  s3_bucket_name = module.s3.bucket_name
   application_port = var.application_port
   root_volume_size = var.root_volume_size
   root_volume_type = var.root_volume_type
@@ -58,6 +74,16 @@ module "ec2" {
   db_identifier    = var.db_identifier
 
 }
+
+# Route 53 Module
+module "route53" {
+  source        = "./modules/route53"
+  domain_name   = var.domain_name
+  route53_zone_id = var.route53_zone_id
+  environment     = var.environment
+  ec2_public_ip = module.ec2.public_ip
+}
+
 
 
 

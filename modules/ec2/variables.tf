@@ -72,4 +72,33 @@ variable "db_host" {
   type        = string
 }
 
+variable "iam_instance_profile" {
+  description = "IAM instance profile for the EC2 instance"
+  type        = string
+}
 
+variable "route53_zone_id" {
+  description = "ID of the Route 53 zone."
+  type        = string
+}
+
+variable "domain_name" {
+  description = "Domain name associated with the EC2 instance."
+  type        = string
+}
+
+variable "environment" {
+  description = "The deployment environment (e.g., staging, production)."
+  type        = string
+}
+
+variable "AWS_REGION" {
+  description = "The AWS region to deploy resources in"
+  type        = string
+
+}
+
+variable "s3_bucket_name" {
+  description = "The name of the S3 bucket created in the S3 module"
+  type        = string
+}
