@@ -126,10 +126,10 @@ EOF
 
 # Auto Scaling Group
 resource "aws_autoscaling_group" "web_app_asg" {
-  desired_capacity     = 1
-  max_size             = 3
-  min_size             = 1
-  vpc_zone_identifier  = var.subnet_id
+  desired_capacity    = 1
+  max_size            = 3
+  min_size            = 1
+  vpc_zone_identifier = var.subnet_id
 
   launch_template {
     id      = aws_launch_template.web_app_launch_template.id
@@ -161,9 +161,9 @@ resource "aws_cloudwatch_metric_alarm" "scale_up_alarm" {
   evaluation_periods  = 2
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = 120               # 2-minute period
+  period              = 120 # 2-minute period
   statistic           = "Average"
-  threshold           = 9                 # Scale up when CPU utilization >= 5%
+  threshold           = 9 # Scale up when CPU utilization >= 5%
 
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.web_app_asg.name
@@ -189,7 +189,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   evaluation_periods  = 2
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = 120               # 2-minute period
+  period              = 120 # 2-minute period
   statistic           = "Average"
   threshold           = 7.5
 
