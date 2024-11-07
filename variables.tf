@@ -120,3 +120,8 @@ variable "iam_instance_profile" {
   description = "The IAM instance profile to be used with AWS resources."
   type        = string
 }
+
+variable "key_name" {
+  description = "The key pair name for EC2 instances"
+  type        = string
+}

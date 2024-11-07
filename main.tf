@@ -57,7 +57,7 @@ module "ec2" {
   vpc_id               = module.vpc.vpc_id
   ami                  = var.ami
   instance_type        = var.instance_type
-  subnet_id            = module.subnets.public_subnet_ids[0]
+  subnet_id = slice(module.subnets.public_subnet_ids, 0, 3)
   iam_instance_profile = module.iam.iam_instance_profile_name
   route53_zone_id      = var.route53_zone_id
   domain_name          = var.domain_name
@@ -72,6 +72,7 @@ module "ec2" {
   db_username          = var.db_username
   db_password          = var.db_password
   db_identifier        = var.db_identifier
+  key_name             = var.key_name
 
 }
 
@@ -81,7 +82,8 @@ module "route53" {
   domain_name     = var.domain_name
   route53_zone_id = var.route53_zone_id
   environment     = var.environment
-  ec2_public_ip   = module.ec2.public_ip
+  alb_dns_name     = module.ec2.alb_dns_name
+  alb_zone_id      = module.ec2.alb_zone_id
 }
 
 

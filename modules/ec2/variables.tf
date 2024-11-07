@@ -24,8 +24,8 @@ variable "instance_type" {
 
 # Declare subnet_id variable
 variable "subnet_id" {
-  description = "The subnet ID where the EC2 instance will be deployed"
-  type        = string
+  description = "List of subnet IDs for the Application Load Balancer and Auto Scaling Group"
+  type        = list(string)
 }
 
 # Declare root_volume_size variable
@@ -102,3 +102,9 @@ variable "s3_bucket_name" {
   description = "The name of the S3 bucket created in the S3 module"
   type        = string
 }
+
+variable "key_name" {
+  description = "The key pair name for the EC2 instances"
+  type        = string
+}
+
