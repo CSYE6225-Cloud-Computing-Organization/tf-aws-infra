@@ -108,3 +108,35 @@ variable "key_name" {
   type        = string
 }
 
+# Auto Scaling Group capacity settings
+variable "asg_desired_capacity" {
+  description = "Desired number of instances in the Auto Scaling Group"
+  type        = number
+  default     = 1
+}
+
+variable "asg_max_size" {
+  description = "Maximum number of instances in the Auto Scaling Group"
+  type        = number
+  default     = 3
+}
+
+variable "asg_min_size" {
+  description = "Minimum number of instances in the Auto Scaling Group"
+  type        = number
+  default     = 1
+}
+
+# CPU utilization thresholds for scaling
+variable "scale_up_threshold" {
+  description = "CPU utilization threshold to trigger scale-up"
+  type        = number
+  default     = 9
+}
+
+variable "scale_down_threshold" {
+  description = "CPU utilization threshold to trigger scale-down"
+  type        = number
+  default     = 7.5
+}
+
