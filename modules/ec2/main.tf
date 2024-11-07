@@ -126,9 +126,9 @@ EOF
 
 # Auto Scaling Group
 resource "aws_autoscaling_group" "web_app_asg" {
-  desired_capacity    = 1
-  max_size            = 3
-  min_size            = 1
+  desired_capacity    = var.asg_desired_capacity
+  max_size            = var.asg_max_size
+  min_size            = var.asg_min_size
   vpc_zone_identifier = var.subnet_id
 
   launch_template {
@@ -144,6 +144,7 @@ resource "aws_autoscaling_group" "web_app_asg" {
     propagate_at_launch = true
   }
 }
+
 
 # Scale-up Policy
 resource "aws_autoscaling_policy" "scale_up" {
@@ -163,7 +164,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up_alarm" {
   namespace           = "AWS/EC2"
   period              = 120 # 2-minute period
   statistic           = "Average"
-  threshold           = 9 # Scale up when CPU utilization >= 5%
+  threshold           = var.scale_up_threshold
 
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.web_app_asg.name
@@ -173,7 +174,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up_alarm" {
   alarm_actions     = [aws_autoscaling_policy.scale_up.arn]
 }
 
-# Scale-Out Policy
+# Scale-down Policy
 resource "aws_autoscaling_policy" "scale_down" {
   name                   = "cpu-scale-down"
   scaling_adjustment     = -1
@@ -182,7 +183,7 @@ resource "aws_autoscaling_policy" "scale_down" {
   autoscaling_group_name = aws_autoscaling_group.web_app_asg.name
 }
 
-# Scale-out Alarm
+# Scale-down Alarm
 resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   alarm_name          = "cpu-scale-down-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -191,7 +192,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   namespace           = "AWS/EC2"
   period              = 120 # 2-minute period
   statistic           = "Average"
-  threshold           = 7.5
+  threshold           = var.scale_down_threshold
 
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.web_app_asg.name

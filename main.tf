@@ -73,6 +73,11 @@ module "ec2" {
   db_password          = var.db_password
   db_identifier        = var.db_identifier
   key_name             = var.key_name
+  asg_desired_capacity = var.asg_desired_capacity
+  asg_max_size         = var.asg_max_size
+  asg_min_size         = var.asg_min_size
+  scale_up_threshold   = var.scale_up_threshold
+  scale_down_threshold = var.scale_down_threshold
 
 }
 
