@@ -5,7 +5,7 @@ resource "aws_security_group" "load_balancer_security_group" {
   description = "Security group for Load Balancer to access web application"
 
   ingress {
-    description = "Allow HTTP from anywhere"
+    description = "Allow HTTP from anywhere (IPv4)"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -13,24 +13,42 @@ resource "aws_security_group" "load_balancer_security_group" {
   }
 
   ingress {
-    description = "Allow HTTPS from anywhere"
+    description      = "Allow HTTP from anywhere (IPv6)"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS from anywhere (IPv4)"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description      = "Allow HTTPS from anywhere (IPv6)"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {
     Name = "load balancer security group"
   }
 }
+
 
 # Application Security Group
 resource "aws_security_group" "application_security_group" {
@@ -103,6 +121,7 @@ NODE_ENV='production'
 S3_BUCKET_NAME='${var.s3_bucket_name}'
 AWS_REGION='${var.AWS_REGION}'
 STATSD_PORT='8125'
+
 EOT
 
 # Check if webapp.service exists and restart the service
@@ -126,6 +145,7 @@ EOF
 
 # Auto Scaling Group
 resource "aws_autoscaling_group" "web_app_asg" {
+  name                = "Webapp-asg"
   desired_capacity    = var.asg_desired_capacity
   max_size            = var.asg_max_size
   min_size            = var.asg_min_size

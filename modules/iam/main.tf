@@ -107,6 +107,32 @@ resource "aws_iam_role_policy_attachment" "attach_autoscaling_policy" {
   policy_arn = aws_iam_policy.autoscaling_policy.arn
 }
 
+# SNS permissions policy for EC2 instance
+resource "aws_iam_policy" "sns_policy" {
+  name        = "SNSPublishPolicy"
+  description = "Allow EC2 instances to publish messages to specific SNS topics"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "sns:Publish"
+        ],
+        Resource = [
+          var.sns_topic_arn
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_sns_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.sns_policy.arn
+}
+
 # Instance Profile to attach to the EC2 instance
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2_instance_profile"
