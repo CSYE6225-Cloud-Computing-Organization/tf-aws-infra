@@ -140,3 +140,8 @@ variable "scale_down_threshold" {
   default     = 7.5
 }
 
+variable "JWT_SECRET" {
+  type        = string
+  description = "Secret key for JWT authentication"
+}
+

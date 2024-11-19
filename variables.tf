@@ -158,3 +158,34 @@ variable "scale_down_threshold" {
   default     = 7.5
 }
 
+variable "lambda_s3_key" {
+  description = "S3 key for the Lambda function zip file"
+  type        = string
+  default     = "path/to/your/lambda.zip" # You can set a default or require this to be passed in
+}
+
+variable "sendgrid_api_key" {
+  type        = string
+  description = "API key for SendGrid"
+}
+
+variable "jwt_secret" {
+  type        = string
+  description = "Secret key for JWT"
+}
+
+variable "verification_link_base" {
+  type        = string
+  description = "Base URL for email verification link"
+}
+
+variable "from_email" {
+  type        = string
+  description = "Email address to send from"
+}
+
+variable "lambda_filename" {
+  description = "Local path to the Lambda zip file"
+  type        = string
+}
+

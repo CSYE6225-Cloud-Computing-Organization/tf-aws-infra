@@ -19,4 +19,5 @@ resource "aws_subnet" "private_subnet" {
   tags = {
     Name = "PrivateSubnet-${count.index + 1}"
   }
+
 }

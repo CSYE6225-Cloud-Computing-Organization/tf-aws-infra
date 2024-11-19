@@ -45,6 +45,7 @@ module "rds" {
 module "iam" {
   source        = "./modules/iam"
   s3_bucket_arn = module.s3.bucket_arn
+  sns_topic_arn = module.sns.sns_topic_arn
 }
 
 module "s3" {
@@ -72,6 +73,7 @@ module "ec2" {
   db_username          = var.db_username
   db_password          = var.db_password
   db_identifier        = var.db_identifier
+  JWT_SECRET           = var.jwt_secret
   key_name             = var.key_name
   asg_desired_capacity = var.asg_desired_capacity
   asg_max_size         = var.asg_max_size
@@ -91,6 +93,21 @@ module "route53" {
   alb_zone_id     = module.ec2.alb_zone_id
 }
 
+module "lambda" {
+  source = "./modules/lambda"
+
+  sns_topic_arn          = module.sns.sns_topic_arn
+  lambda_filename        = var.lambda_filename
+  sendgrid_api_key       = var.sendgrid_api_key
+  verification_link_base = var.verification_link_base
+  from_email             = var.from_email
+  environment            = var.environment
+}
 
 
 
+module "sns" {
+  source               = "./modules/sns"
+  lambda_function_arn  = module.lambda.lambda_function_arn
+  lambda_function_name = module.lambda.lambda_function_name
+}
