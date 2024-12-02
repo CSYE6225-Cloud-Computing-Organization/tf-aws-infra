@@ -145,3 +145,22 @@ variable "JWT_SECRET" {
   description = "Secret key for JWT authentication"
 }
 
+variable "ec2_key_arn" {
+  description = "KMS key ID ec2"
+  type        = string
+}
+
+variable "db_credentials_secret_arn" {
+  type        = string
+  description = "ARN for the database credentials secret managed by AWS Secrets Manager"
+}
+
+variable "sns_arn" {
+  type        = string
+  description = "Secret key for JWT authentication"
+}
+
+variable "certificate_arn" {
+  type        = string
+  description = "certificate_arn"
+}
