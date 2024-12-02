@@ -33,3 +33,19 @@ variable "lambda_filename" {
   type        = string
 }
 
+variable "lambda_email_credentials_secret_id" {
+  type        = string
+  description = "ARN for the Lambda email credentials secret"
+}
+
+variable "secrets_manager_kms_key_arn" {
+  type        = string
+  description = "KMS key ID used for encrypting environment variables"
+}
+
+
+variable "lambda_secret_name" {
+  description = "Name of the secret in Secrets Manager"
+  type        = string
+}
+

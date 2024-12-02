@@ -48,3 +48,8 @@ variable "app_security_group_id" {
   description = "ID of the application's security group to allow MySQL traffic"
   type        = string
 }
+
+variable "rds_key_id" {
+  description = "KMS key arn rds"
+  type        = string
+}

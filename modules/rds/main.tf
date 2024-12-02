@@ -41,6 +41,9 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot    = true
   publicly_accessible    = false
   multi_az               = false
+  storage_encrypted      = true
+  kms_key_id             = var.rds_key_id
+
 }
 
 # DB Subnet Group

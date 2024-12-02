@@ -189,3 +189,23 @@ variable "lambda_filename" {
   type        = string
 }
 
+
+variable "lambda_secret_name" {
+  description = "Name of the secret in Secrets Manager"
+  type        = string
+}
+# Database Credentials Variables
+variable "db_secret_name" {
+  description = "Name of the database credentials secret"
+  type        = string
+}
+
+variable "aws_account_id" {
+  description = "The AWS Account Id"
+  type        = string
+}
+
+variable "certificate_arn" {
+  type        = string
+  description = "certificate_arn"
+}
